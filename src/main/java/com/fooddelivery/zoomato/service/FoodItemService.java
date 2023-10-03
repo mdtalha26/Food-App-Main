@@ -22,11 +22,13 @@ public interface FoodItemService {
 
     public FoodItem addNewFoodItem(FoodItem foodItem);
 
-    public List<FoodItem> getAllFoodItems(int pageNumber, String searchKey);
+    public List<FoodItem> getAllFoodItems(int pageNumber, String searchKey,String category);
 
     public FoodItem getFoodItemDetailsById(Integer foodItemId);
 
     public void deleteFoodItemDetails(Integer foodItemId);
 
     public List<FoodItem> getFoodItemDetails(boolean isSingleProductCheckout, Integer foodItemId);
+
+    public List<FoodItem> getFoodItemsByCategory(String category,int pageNumber);
 }

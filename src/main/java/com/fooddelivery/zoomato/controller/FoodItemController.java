@@ -52,11 +52,23 @@ public class FoodItemController {
 
     @GetMapping({"/getAllFoodItems"})
     public List<FoodItem> getAllFoodItems(@RequestParam(defaultValue = "0") int pageNumber,
-                                        @RequestParam(defaultValue = "") String searchKey) {
-        List<FoodItem> result = foodItemService.getAllFoodItems(pageNumber, searchKey);
+                                        @RequestParam(defaultValue = "") String searchKey,
+                                          @RequestParam(defaultValue = "") String category) {
+        List<FoodItem> result = foodItemService.getAllFoodItems(pageNumber, searchKey,category);
         System.out.println("Result size is "+ result.size());
         return result;
     }
+
+    ///////////////////////////////////////////////////test code//////////////////////////////////////
+    @GetMapping({"/getAllFoodItemsByCategory"})
+    public List<FoodItem> getAllFoodItemsByCategory(@RequestParam(defaultValue = "0") int pageNumber,
+                                          @RequestParam(defaultValue = "") String category) {
+        List<FoodItem> result = foodItemService.getFoodItemsByCategory(category,pageNumber);
+        System.out.println("Result size is "+ result.size());
+        return result;
+    }
+
+    ///////////////////////////////////////////////////till here//////////////////////////////////////////
 
     @GetMapping({"/getFoodItemDetailsById/{foodItemId}"})
     public FoodItem getFoodItemDetailsById(@PathVariable("foodItemId") Integer foodItemId) {

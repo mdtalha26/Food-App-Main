@@ -39,15 +39,18 @@ public class FoodItemServiceImpl implements FoodItemService {
         return foodItemRepository.save(foodItem);
     }
 
-    public List<FoodItem> getAllFoodItems(int pageNumber, String searchKey) {
+    public List<FoodItem> getAllFoodItems(int pageNumber, String searchKey, String category) {
         Pageable pageable = PageRequest.of(pageNumber,12);
-
-        if(searchKey.equals("")) {
-            return (List<FoodItem>) foodItemRepository.findAll(pageable);
-        } else {
-            return (List<FoodItem>) foodItemRepository.findByFoodItemNameContainingIgnoreCaseOrFoodItemDescriptionContainingIgnoreCase(
-                    searchKey, searchKey, pageable
-            );
+        if(category.equals("")) {
+            if (searchKey.equals("")) {
+                return (List<FoodItem>) foodItemRepository.findAll(pageable);
+            } else {
+                return (List<FoodItem>) foodItemRepository.findByFoodItemNameContainingIgnoreCaseOrFoodItemDescriptionContainingIgnoreCase(
+                        searchKey, searchKey, pageable
+                );
+            }
+        }else {
+            return (List<FoodItem>) foodItemRepository.findAllByFoodItemCategory(category,pageable);
         }
 
     }
@@ -76,5 +79,10 @@ public class FoodItemServiceImpl implements FoodItemService {
 
             return carts.stream().map(x -> x.getFoodItem()).collect(Collectors.toList());
         }
+    }
+
+    public List<FoodItem> getFoodItemsByCategory(String category, int pageNumber){
+        Pageable pageable = PageRequest.of(pageNumber,12);
+        return foodItemRepository.findAllByFoodItemCategory(category,pageable);
     }
 }

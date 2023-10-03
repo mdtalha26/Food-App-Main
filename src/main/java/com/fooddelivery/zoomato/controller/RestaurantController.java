@@ -36,7 +36,7 @@ public class RestaurantController {
 //    public List<Restaurant> getAllRestaurant() {
 //        return restaurantService.getAllRestaurants();
 //    }
-    public List<Restaurant> getAllFoodItems(@RequestParam(defaultValue = "0") int pageNumber,
+    public List<Restaurant> getAllRestaurant(@RequestParam(defaultValue = "0") int pageNumber,
                                           @RequestParam(defaultValue = "") String searchKey) {
         List<Restaurant> result = restaurantService.getAllRestaurants(pageNumber, searchKey);
         System.out.println("Result size is "+ result.size());

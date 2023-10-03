@@ -16,4 +16,6 @@ public interface FoodItemRepository extends CrudRepository<FoodItem, Integer> {/
     public List<FoodItem> findByFoodItemNameContainingIgnoreCaseOrFoodItemDescriptionContainingIgnoreCase(
             String key1, String key2, Pageable pageable
     );
+
+    public List<FoodItem> findAllByFoodItemCategory(String category,Pageable pageable);
 }

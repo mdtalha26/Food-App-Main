@@ -17,6 +17,8 @@ public class FoodItem {
     @Column(length = 2000)
     @NotBlank(message = "Food Item description cannot be blank")
     private String foodItemDescription;
+    @NotBlank(message = "FoodItem Category required")
+    private String foodItemCategory;
     @NotNull
     private Double foodItemPrice;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -44,10 +46,11 @@ public class FoodItem {
         this.user = user;
     }
 
-    public FoodItem(Integer foodItemId, String foodItemName, String foodItemDescription, Double foodItemPrice, Set<ImageModel> foodItemImages,User user) {
+    public FoodItem(Integer foodItemId, String foodItemName, String foodItemDescription, String foodItemCategory, Double foodItemPrice, Set<ImageModel> foodItemImages,User user) {
         this.foodItemId = foodItemId;
         this.foodItemName = foodItemName;
         this.foodItemDescription = foodItemDescription;
+        this.foodItemCategory=foodItemCategory;
         this.foodItemPrice = foodItemPrice;
 //        this.foodItemDiscountedPrice = foodItemDiscountedPrice;
 //        this.foodItemActualPrice = foodItemActualPrice;
@@ -77,6 +80,14 @@ public class FoodItem {
 
     public void setFoodItemDescription(String foodItemDescription) {
         this.foodItemDescription = foodItemDescription;
+    }
+
+    public String getFoodItemCategory() {
+        return foodItemCategory;
+    }
+
+    public void setFoodItemCategory(String foodItemCategory) {
+        this.foodItemCategory = foodItemCategory;
     }
 
     public Double getFoodItemPrice() {
