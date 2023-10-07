@@ -102,7 +102,7 @@ public class MenuServiceImpl implements MenuService {
 
     //////////////////////////////////////////////trial code 1/////////////////////////
     public List<FoodItem> getAllFoodItemInMenu(Integer menuId,String searchKey,int pageNumber){
-        Pageable pageable = PageRequest.of(pageNumber,4);
+        Pageable pageable = PageRequest.of(pageNumber,10);
         if(searchKey.equals("")){
             return menuRepository.findFoodItemByMenuId(menuId,pageable);
         }else {
@@ -114,7 +114,7 @@ public class MenuServiceImpl implements MenuService {
     /////////////////////////////////////////////// code 2 for backup/////////////////////////////
 
     public List<FoodItem> getAllFoodItemInMenuBySearch(Integer menuId, String searchKey, int pageNumber){
-        Pageable pageable = PageRequest.of(pageNumber,4);
+        Pageable pageable = PageRequest.of(pageNumber,10);
         return menuRepository.findFilteredFoodItemsByMenuIdAndSearchKey(menuId,searchKey.toLowerCase(),pageable);
     }
 }

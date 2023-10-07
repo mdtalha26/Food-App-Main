@@ -77,21 +77,27 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     public Restaurant createRestaurant(Restaurant restaurant) {
         String username = JwtRequestFilter.CURRENT_USER;
-        Optional<Restaurant> existingRestaurant=restaurantRepository.findByFssaiLicenseNumber(restaurant.getFssaiLicenseNumber());
-        Boolean restIsPresent=existingRestaurant.isPresent();
-        if(restIsPresent==true){
-            throw new FssaiNumberAlreadyExistsException("FSSAI Number is already linked with a restaurant, Please login or provide a different FSSAI license");
-        }else {
+        Optional<Restaurant> existingRestaurant = restaurantRepository.findByFssaiLicenseNumber(restaurant.getFssaiLicenseNumber());
+        Boolean restIsPresent = existingRestaurant.isPresent();
 
-            User user = null;
-            if (username != null) {
-                user = userRepository.findById(username).get();
-            }
-            restaurant.setUser(user);
-            String methodName = "createRestaurant()";
-            logger.info(methodName + "Called");
+        if (restaurant.getRestaurantId() != null) {
+            // If restaurantId is present, it's an update
             return restaurantRepository.save(restaurant);
+        } else {
+            if (restIsPresent == true) {
+                throw new FssaiNumberAlreadyExistsException("FSSAI Number is already linked with a restaurant, Please login or provide a different FSSAI license");
+            } else {
+
+                User user = null;
+                if (username != null) {
+                    user = userRepository.findById(username).get();
+                }
+                restaurant.setUser(user);
+                String methodName = "createRestaurant()";
+                logger.info(methodName + "Called");
+                return restaurantRepository.save(restaurant);
 //        return "Menu created Successfully";
+            }
         }
     }
 

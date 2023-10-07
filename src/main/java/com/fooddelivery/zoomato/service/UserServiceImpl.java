@@ -49,36 +49,36 @@ public class UserServiceImpl implements UserService {
 
 
         User adminUser = new User();
-        adminUser.setUserName("admin123");
+        adminUser.setUserName("admin");
         adminUser.setUserPassword(getEncodedPassword("admin@pass"));
         adminUser.setUserFirstName("admin");
         adminUser.setUserLastName("admin");
         adminUser.setPhoneNumber("9876543234");
-        adminUser.setEmailId("admin123@gmail.com");
+        adminUser.setEmailId("admin@gmail.com");
         Set<Role> adminRoles = new HashSet<>();
         adminRoles.add(adminRole);
         adminUser.setRole(adminRoles);
         userRepository.save(adminUser);
 
         User restaurantUser = new User();
-        restaurantUser.setUserName("restaurant123");
-        restaurantUser.setUserPassword(getEncodedPassword("restaurant@pass"));
+        restaurantUser.setUserName("gharkakhana");
+        restaurantUser.setUserPassword(getEncodedPassword("gharkakhana@pass"));
         restaurantUser.setUserFirstName("Restaurant");
         restaurantUser.setUserLastName("Restaurant");
         restaurantUser.setPhoneNumber("1234567890");
-        restaurantUser.setEmailId("restaurant123@gmail.com");
+        restaurantUser.setEmailId("gharkakhana@gmail.com");
         Set<Role> restaurantRoles = new HashSet<>();
         restaurantRoles.add(restaurantRole);
         restaurantUser.setRole(restaurantRoles);
         userRepository.save(restaurantUser);
 
         User user = new User();
-        user.setUserName("raj123");
-        user.setUserPassword(getEncodedPassword("raj@123"));
-        user.setUserFirstName("raj");
-        user.setUserLastName("sharma");
+        user.setUserName("talha26");
+        user.setUserPassword(getEncodedPassword("talha26@pass"));
+        user.setUserFirstName("Mohammed");
+        user.setUserLastName("Talha");
         user.setPhoneNumber("9876512345");
-        user.setEmailId("raj123@gmail.com");
+        user.setEmailId("talha26@gmail.com");
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(userRole);
         user.setRole(userRoles);
