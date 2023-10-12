@@ -79,6 +79,7 @@ public class UserServiceImpl implements UserService {
         user.setUserLastName("Talha");
         user.setPhoneNumber("9876512345");
         user.setEmailId("talha26@gmail.com");
+        user.setUserAddress("33, chandralayout");
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(userRole);
         user.setRole(userRoles);
@@ -127,6 +128,10 @@ public class UserServiceImpl implements UserService {
     public User getMyDetails() {
         String username = JwtRequestFilter.CURRENT_USER;
         return userRepository.findById(username).get();
+    }
+
+    public User updateUserDetails(User user){
+       return userRepository.save(user);
     }
 
 }

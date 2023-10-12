@@ -9,6 +9,9 @@ import java.util.Optional;
 
 public interface RestaurantService {
 //    public List<Restaurant> getAllRestaurants();
+
+    public void markRestaurantAsVerified(Integer restaurantId);
+    public List<Restaurant> getAllRestaurantsForAdmin(int pageNumber, String searchKey);
     public List<Restaurant> getAllRestaurants(int pageNumber, String searchKey);
     public List<Restaurant> getMyRestaurants();
     public Optional<Restaurant> getRestaurantById(Integer restaurantId);

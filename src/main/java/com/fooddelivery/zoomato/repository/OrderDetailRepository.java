@@ -39,4 +39,8 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Intege
     public List<OrderDetail> findByRestaurantAndOrderFullNameContainingIgnoreCase(
            User restaurant, String key1,Pageable pageable
     );
+
+    public List<OrderDetail> findByUserAndTransactionIdContainingIgnoreCase(
+            User user, String key1, Pageable pageable
+    );
 }

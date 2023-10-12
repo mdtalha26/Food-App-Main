@@ -25,8 +25,9 @@ public class OrderDetailController {
 
     @PreAuthorize("hasRole('User')")
     @GetMapping({"/getOrderDetails"})
-    public List<OrderDetail> getOrderDetails() {
-        return orderDetailService.getOrderDetails();
+    public List<OrderDetail> getOrderDetails(@RequestParam(defaultValue = "0") int pageNumber,
+                                             @RequestParam(defaultValue = "") String searchKey) {
+        return orderDetailService.getOrderDetails(pageNumber, searchKey);
     }
 
     @PreAuthorize("hasRole('Restaurant')")

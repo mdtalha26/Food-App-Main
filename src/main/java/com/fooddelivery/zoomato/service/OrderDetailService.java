@@ -24,7 +24,7 @@ public interface OrderDetailService {
 
     public List<OrderDetail> getAllOrderDetailsForRestaurant(String status,String sort,int pageNumber,String searchKey);
 
-    public List<OrderDetail> getOrderDetails();
+    public List<OrderDetail> getOrderDetails(int pageNumber, String searchKey);
 
     public List<OrderDetail> getOrderDetailsForRestaurant();
 

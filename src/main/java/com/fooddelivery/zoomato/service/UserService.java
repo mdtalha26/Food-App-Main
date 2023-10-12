@@ -19,4 +19,6 @@ public interface UserService {
     public String getEncodedPassword(String password);
 
     public User getMyDetails();
+
+    public User updateUserDetails(User user);
 }

@@ -1,6 +1,7 @@
 package com.fooddelivery.zoomato.service;
 
 import com.fooddelivery.zoomato.configuration.JwtRequestFilter;
+import com.fooddelivery.zoomato.entity.Restaurant;
 import com.fooddelivery.zoomato.repository.CartRepository;
 import com.fooddelivery.zoomato.repository.FoodItemRepository;
 import com.fooddelivery.zoomato.repository.UserRepository;
@@ -23,6 +24,8 @@ public interface FoodItemService {
     public FoodItem addNewFoodItem(FoodItem foodItem);
 
     public List<FoodItem> getAllFoodItems(int pageNumber, String searchKey,String category);
+
+    public List<Restaurant> getAllRestaurantOfFoodItems(int pageNumber, String searchKey, String category);
 
     public FoodItem getFoodItemDetailsById(Integer foodItemId);
 

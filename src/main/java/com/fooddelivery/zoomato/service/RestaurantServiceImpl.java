@@ -19,9 +19,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
+
+    private static final String STATUS = "Not Verified";
 
     private RestaurantRepository restaurantRepository;
     private MenuRepository menuRepository;
@@ -49,16 +52,53 @@ public class RestaurantServiceImpl implements RestaurantService {
 //        return restaurantRepository.findAll();
 //    }
 
+    public void markRestaurantAsVerified(Integer restaurantId) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).get();
 
-    public List<Restaurant> getAllRestaurants(int pageNumber, String searchKey) {
-        Pageable pageable = PageRequest.of(pageNumber,12);
+        if(restaurant != null) {
+            restaurant.setStatus("Verified");
+            restaurantRepository.save(restaurant);
+        }
 
-        if(searchKey.equals("")) {
+    }
+
+    public List<Restaurant> getAllRestaurantsForAdmin(int pageNumber, String searchKey) {
+        Pageable pageable = PageRequest.of(pageNumber, 12);
+
+        if (searchKey.equals("")) {
             return (List<Restaurant>) restaurantRepository.findAll(pageable);
         } else {
             return (List<Restaurant>) restaurantRepository.findByRestaurantNameContainingIgnoreCaseOrRestaurantAddressContainingIgnoreCase(
                     searchKey, searchKey, pageable
             );
+        }
+    }
+
+    public List<Restaurant> getAllRestaurants(int pageNumber, String searchKey) {
+        Pageable pageable = PageRequest.of(pageNumber,12);
+
+        if(searchKey.equals("")) {
+            List<Restaurant> allRest=restaurantRepository.findAll(pageable);
+            List<Restaurant> restaurantsWithMenus = allRest.stream()
+                    .filter(restaurant -> !restaurant.getMenus().isEmpty())
+                    .collect(Collectors.toList());
+            List<Restaurant> restaurantsWithMenusAndFoodItems = restaurantsWithMenus.stream()
+                    .filter(restaurant -> restaurant.getMenus().stream().anyMatch(menu -> !menu.getFoodItems().isEmpty()))
+                    .collect(Collectors.toList());
+            return restaurantsWithMenusAndFoodItems;
+
+//            return (List<Restaurant>) restaurantRepository.findAll(pageable);
+        } else {
+             List<Restaurant> allRest= restaurantRepository.findByRestaurantNameContainingIgnoreCaseOrRestaurantAddressContainingIgnoreCase(
+                    searchKey, searchKey, pageable
+            );
+            List<Restaurant> restaurantsWithMenus = allRest.stream()
+                    .filter(restaurant -> !restaurant.getMenus().isEmpty())
+                    .collect(Collectors.toList());
+            List<Restaurant> restaurantsWithMenusAndFoodItems = restaurantsWithMenus.stream()
+                    .filter(restaurant -> restaurant.getMenus().stream().anyMatch(menu -> !menu.getFoodItems().isEmpty()))
+                    .collect(Collectors.toList());
+            return restaurantsWithMenusAndFoodItems;
         }
 
     }
@@ -93,6 +133,7 @@ public class RestaurantServiceImpl implements RestaurantService {
                     user = userRepository.findById(username).get();
                 }
                 restaurant.setUser(user);
+                restaurant.setStatus(STATUS);
                 String methodName = "createRestaurant()";
                 logger.info(methodName + "Called");
                 return restaurantRepository.save(restaurant);

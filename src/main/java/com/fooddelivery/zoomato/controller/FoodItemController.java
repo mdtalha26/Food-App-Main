@@ -1,5 +1,6 @@
 package com.fooddelivery.zoomato.controller;
 
+import com.fooddelivery.zoomato.entity.Restaurant;
 import com.fooddelivery.zoomato.service.FoodItemService;
 import com.fooddelivery.zoomato.entity.ImageModel;
 import com.fooddelivery.zoomato.entity.FoodItem;
@@ -55,6 +56,16 @@ public class FoodItemController {
                                         @RequestParam(defaultValue = "") String searchKey,
                                           @RequestParam(defaultValue = "") String category) {
         List<FoodItem> result = foodItemService.getAllFoodItems(pageNumber, searchKey,category);
+        System.out.println("Result size is "+ result.size());
+        return result;
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @GetMapping({"/getAllRestaurantsByFoodItemSearch"})
+    public List<Restaurant> getAllRestaurantOfFoodItems(@RequestParam(defaultValue = "0") int pageNumber,
+                                                       @RequestParam(defaultValue = "") String searchKey,
+                                                       @RequestParam(defaultValue = "") String category) {
+        List<Restaurant> result = foodItemService.getAllRestaurantOfFoodItems(pageNumber, searchKey,category);
         System.out.println("Result size is "+ result.size());
         return result;
     }

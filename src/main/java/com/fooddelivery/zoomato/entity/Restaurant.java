@@ -42,6 +42,8 @@ public class Restaurant {
     @JoinColumn(name = "restaurant_id")
     private List<Menu> menus = new ArrayList<>();
 
+    private String status;
+
     // Getter and Setter methods
 
    public Integer getRestaurantId() {
@@ -107,6 +109,14 @@ public class Restaurant {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     //       other methods

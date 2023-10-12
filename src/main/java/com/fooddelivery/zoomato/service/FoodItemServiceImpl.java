@@ -3,9 +3,11 @@ package com.fooddelivery.zoomato.service;
 import com.fooddelivery.zoomato.configuration.JwtRequestFilter;
 import com.fooddelivery.zoomato.entity.Cart;
 import com.fooddelivery.zoomato.entity.FoodItem;
+import com.fooddelivery.zoomato.entity.Restaurant;
 import com.fooddelivery.zoomato.entity.User;
 import com.fooddelivery.zoomato.repository.CartRepository;
 import com.fooddelivery.zoomato.repository.FoodItemRepository;
+import com.fooddelivery.zoomato.repository.RestaurantRepository;
 import com.fooddelivery.zoomato.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +26,9 @@ public class FoodItemServiceImpl implements FoodItemService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     @Autowired
     private CartRepository cartRepository;
@@ -54,6 +59,37 @@ public class FoodItemServiceImpl implements FoodItemService {
         }
 
     }
+
+    //////////////////////////////////////////////////////////////////////////////
+
+    public List<Restaurant> getAllRestaurantOfFoodItems(int pageNumber, String searchKey, String category) {
+        Pageable pageable = PageRequest.of(pageNumber,12);
+        if(category.equals("")) {
+            if (searchKey.equals("")) {
+                return restaurantRepository.findAll(pageable);
+            } else {
+                List<FoodItem> fiList= foodItemRepository.findByFoodItemNameContainingIgnoreCaseOrFoodItemDescriptionContainingIgnoreCase(
+                        searchKey, searchKey, pageable
+                );
+                List<User> filteredList= fiList.stream().map(x->x.getUser()).collect(Collectors.toList());
+                List<Restaurant> restList=restaurantRepository.findAll(pageable);
+                List<Restaurant> restaurantsWithMatchingUsers = restList.stream()
+                        .filter(restaurant -> filteredList.contains(restaurant.getUser()))
+                        .collect(Collectors.toList());
+                return restaurantsWithMatchingUsers;
+            }
+        }else {
+            List<FoodItem> fiByCategory= foodItemRepository.findAllByFoodItemCategory(category,pageable);
+            List<User> filteredList= fiByCategory.stream().map(x->x.getUser()).collect(Collectors.toList());
+            List<Restaurant> restList=restaurantRepository.findAll(pageable);
+            List<Restaurant> restaurantsWithMatchingUsers = restList.stream()
+                    .filter(restaurant -> filteredList.contains(restaurant.getUser()))
+                    .collect(Collectors.toList());
+            return restaurantsWithMatchingUsers;
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////
 
     public FoodItem getFoodItemDetailsById(Integer foodItemId) {
         return foodItemRepository.findById(foodItemId).get();

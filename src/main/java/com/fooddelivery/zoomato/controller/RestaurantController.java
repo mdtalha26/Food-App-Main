@@ -31,6 +31,18 @@ public class RestaurantController {
     public RestaurantController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
+
+
+    @PreAuthorize("hasAnyRole('Admin')")
+    @GetMapping("/forAdmin")
+    public List<Restaurant> getAllRestaurantForAdmin(@RequestParam(defaultValue = "0") int pageNumber,
+                                             @RequestParam(defaultValue = "") String searchKey) {
+        List<Restaurant> result = restaurantService.getAllRestaurantsForAdmin(pageNumber, searchKey);
+        System.out.println("Result size is "+ result.size());
+        return result;
+    }
+
+
     @PreAuthorize("hasAnyRole('Admin', 'User')")
     @GetMapping
 //    public List<Restaurant> getAllRestaurant() {
@@ -43,10 +55,16 @@ public class RestaurantController {
         return result;
     }
 
-    @PreAuthorize("hasAnyRole('Admin', 'Restaurant')")
+    @PreAuthorize("hasAnyRole('Admin', 'Restaurant', 'User')")
     @GetMapping("/{restaurantId}")
     public Optional<Restaurant> getRestaurantById(@PathVariable Integer restaurantId) {
         return restaurantService.getRestaurantById(restaurantId);
+    }
+
+    @PreAuthorize("hasAnyRole('Admin')")
+    @GetMapping({"/verifyRestaurant/{restaurantId}"})
+    public void markRestaurantAsVerified(@PathVariable(name = "restaurantId") Integer restaurantId) {
+        restaurantService.markRestaurantAsVerified(restaurantId);
     }
 
 //    @PreAuthorize("hasRole('Admin')")

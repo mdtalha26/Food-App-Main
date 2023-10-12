@@ -27,6 +27,7 @@ public class User {
     @NotBlank(message = "Email is required")
     @Pattern(regexp = "^[a-z0-9](?:[a-z0-9+.-]*[a-z0-9])?@[a-z0-9.-]+\\.[a-z]{2,}$", message = "Invalid email address format.")
     private String emailId;
+    private String userAddress;
     @NotBlank(message = "Password is required")
     @Pattern(regexp = "^\\S+$", message = "Password must not contain spaces")
     @Size(min = 8, message = "Password must be at least 6 characters long")
@@ -81,6 +82,14 @@ public class User {
 
     public void setEmailId(String emailId) {
         this.emailId = emailId;
+    }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
     }
 
     public String getUserPassword() {

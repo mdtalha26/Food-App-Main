@@ -1,6 +1,8 @@
 package com.fooddelivery.zoomato.service;
 
 import com.fooddelivery.zoomato.configuration.JwtRequestFilter;
+import com.fooddelivery.zoomato.costomexceptions.DifferentRestaurantCantBeAddedToCartException;
+import com.fooddelivery.zoomato.costomexceptions.FoodItemAlreadyInCartException;
 import com.fooddelivery.zoomato.entity.Cart;
 import com.fooddelivery.zoomato.entity.FoodItem;
 import com.fooddelivery.zoomato.entity.User;
@@ -43,12 +45,23 @@ public class CartServiceImpl implements CartService {
         List<Cart> filteredList = cartList.stream().filter(x -> x.getFoodItem().getFoodItemId() == foodItemId).collect(Collectors.toList());
 
         if(filteredList.size() > 0) {
-            return null;
+            throw new FoodItemAlreadyInCartException("FoodItem already present in cart, to adjust the quantity proceed to checkout");
+//            return null;
         }
 
         if(foodItem != null && user != null) {
             Cart cart = new Cart(foodItem, user);
-            return cartRepository.save(cart);
+            if(cartList.isEmpty()) {
+                return cartRepository.save(cart);
+            }else{
+                User restInCart = cart.getFoodItem().getUser();
+                boolean restAlreadyInCart = cartList.stream().anyMatch(x -> x.getFoodItem().getUser().equals(restInCart));
+                if(restAlreadyInCart){
+                    return cartRepository.save(cart);
+                }else {
+                    throw new DifferentRestaurantCantBeAddedToCartException("Food from different restaurant cant be added. Either empty the cart or add food from same restaurant");
+                }
+            }
         }
 
         return null;

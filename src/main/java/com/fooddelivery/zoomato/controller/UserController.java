@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
@@ -46,8 +43,8 @@ public class UserController {
 
     @GetMapping({"/forAdmin"})
     @PreAuthorize("hasRole('Admin')")
-    public String forAdmin(){
-        return "This URL is only accessible to the admin";
+    public User forAdmin(){
+        return this.userService.getMyDetails();
     }
 
     @GetMapping({"/forRestaurant"})
@@ -60,5 +57,11 @@ public class UserController {
     @PreAuthorize("hasRole('User')")
     public User forUser(){
         return this.userService.getMyDetails();
+    }
+
+    @PutMapping({"/updateDetails"})
+    @PreAuthorize("hasRole('User')")
+    public User updateDetails(@RequestBody User user){
+        return this.userService.updateUserDetails(user);
     }
 }

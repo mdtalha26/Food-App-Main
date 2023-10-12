@@ -114,11 +114,12 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         return orderDetails;
     }
 
-    public List<OrderDetail> getOrderDetails() {
+    public List<OrderDetail> getOrderDetails(int pageNumber, String searchKey ) {
+        Pageable pageable = PageRequest.of(pageNumber,12);
         String currentUser = JwtRequestFilter.CURRENT_USER;
         User user = userRepository.findById(currentUser).get();
 
-        return orderDetailRepository.findByUser(user);
+        return orderDetailRepository.findByUserAndTransactionIdContainingIgnoreCase(user,searchKey,pageable);
     }
 
     public List<OrderDetail> getOrderDetailsForRestaurant() {
